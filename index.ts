@@ -43,6 +43,19 @@ app.post('/api/v1/urls', (req, res) => {
     return res.status(201).json({ shortUrl })
 })
 
+app.get('/:shortCode', async (req, res) => {
+    const { shortCode } = req.params
+
+    const shortenedUrlRepository = AppDataSource.getRepository('ShortenedUrl')
+    const shortenedUrl = await shortenedUrlRepository.findOne({ where: { shortenedCode: shortCode } })
+
+    if (!shortenedUrl) {
+        return res.status(404).json({ error: 'URL no encontrada' })
+    }
+
+    return res.redirect(shortenedUrl.originalUrl)
+})
+
 const PORT = 3000
 
 function startServer() {
