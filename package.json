@@ -1,0 +1,42 @@
+{
+  "name": "acortador-url",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev index.ts",
+    "tsc": "tsc",
+    "lint": "eslint . --ext .ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmlc643/acortador-urls.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jmlc643/acortador-urls/issues"
+  },
+  "homepage": "https://github.com/jmlc643/acortador-urls#readme",
+  "dependencies": {
+    "@types/express": "5.0.3",
+    "cors": "2.8.5",
+    "cross-env": "7.0.3",
+    "dotenv": "17.2.0",
+    "express": "5.1.0",
+    "pg": "8.16.3",
+    "reflect-metadata": "0.2.2",
+    "typeorm": "0.3.25"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "jest": "30.0.5",
+    "standard": "17.1.2",
+    "supertest": "7.1.4",
+    "ts-node-dev": "2.0.0",
+    "typescript": "5.8.3"
+  }
+}
