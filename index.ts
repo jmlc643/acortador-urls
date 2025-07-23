@@ -2,10 +2,11 @@ import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import AppDataSource from './db'
+import { generateShortCode } from './utils'
 
 dotenv.config()
 
-const app = express()
+export const app = express()
 app.use(cors())
 app.use(express.json())
 
@@ -20,7 +21,6 @@ app.post('/api/v1/urls', (req, res) => {
         return res.status(400).json({ error: 'URL original es requerida' })
     }
 
-    // Verificar que sea una url autentica
     try {
         new URL(originalUrl.url)
     } catch (error) {
@@ -58,29 +58,27 @@ app.get('/:shortCode', async (req, res) => {
 
 const PORT = 3000
 
-function startServer() {
-    // Conectar a la base de datos
-    AppDataSource.initialize()
-        .then(() => {
-            console.log('Conexión a la base de datos establecida')
+export async function startServer() {
+    try {
+        // Conectar a la base de datos
+        await AppDataSource.initialize()
+        console.log('Conexión a la base de datos establecida')
+        
+        app.listen(PORT, () => {
+            console.log(`Servidor corriendo en http://localhost:${PORT}`)
         })
-        .catch(error => {
-            console.error('Error al conectar a la base de datos:', error)
-            process.exit(1)
-        })
-    app.listen(PORT, () => {
-        console.log(`Servidor corriendo en http://localhost:${PORT}`)
-    })
+    } catch (error) {
+        console.error('Error al conectar a la base de datos:', error)
+    }
 }
 
-function generateShortCode() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    let shortCode = ''
-    for (let i = 0; i < 6; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length)
-        shortCode += characters[randomIndex]
+export async function closeServer() {
+    try {
+        await AppDataSource.destroy()
+        console.log('Conexión a la base de datos cerrada')
+    } catch (error) {
+        console.error('Error al cerrar la conexión:', error)
     }
-    return shortCode
 }
 
 startServer()
